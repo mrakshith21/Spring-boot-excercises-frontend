@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+
+        #result{
+            margin-left: 45%;
+            text-align: left;
+        }
+    </style>
+
+    <script>
+
+        $("document").ready(function (){
+            $("#submit-btn").click(function (){
+                $.ajax(
+                    {
+                        url: "http://localhost:8081/wordcount?text=" + $("#sentence").val(),
+                        type: "GET",
+                        crossDomain: true,
+                        dataType: 'json',
+                        headers : {
+                            "Access-Control-Allow-Origin":"*"
+                        },
+                        success : function (result){
+                            $("#result").html("<br>Word count <br><br>");
+                            $.each(Object.keys(result.freq), function(index, element) {
+                                $('#result').append($('<div>', {
+                                    text: element + " : " + result.freq[element]
+                                }));
+                            });
+                            // $("#result").text("Word count : " + result)
+                        }
+                    }
+                )
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <label>Enter the paragraph</label><br><br>
+    <textarea id="sentence"></textarea>
+    <div class="submit-btn">
+        <input type="button" id="submit-btn" value="Submit" >
+    </div>
+
+    <div id="result">
+
+    </div>
+</div>
+</body>
+</html>

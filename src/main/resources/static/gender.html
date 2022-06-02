@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+
+        let request = new XMLHttpRequest();
+        function submit(){
+            let values = document.getElementsByName("gender");
+            let gender;
+            for(let i = 0; i < values.length; i++){
+                if(values[i].checked){
+                    gender = values[i].value;
+                    break;
+                }
+            }
+            let url = "http://localhost:8081/gender?gender=" + gender;
+            console.log(url);
+            request.open("GET", url, true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage(){
+            if(request.readyState === 4 && request.status === 200){
+                let result = request.responseText;
+                console.log(result);
+                document.getElementById("result").innerHTML = result;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+        <label>Gender</label><br><br>
+        <div>
+            <input type="radio" name="gender" value="M"/>Male<br>
+            <input type="radio" name="gender" value="F"/>Female<br><br>
+        </div>
+        <div class="submit-btn">
+            <input type="button" value="Submit" onclick="submit()"></input>
+        </div>
+
+    <div id="result">
+
+    </div>
+</div>
+</body>
+</html>

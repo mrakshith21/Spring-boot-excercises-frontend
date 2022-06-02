@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $("input").click(function(){
+                $.ajax({
+                    url : "http://localhost:8081/word?number=" + $("#number").find(":selected").text(),
+                    type: "GET",
+                    crossDomain: true,
+
+                    headers : {
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    success : function (result){
+                        console.log(result)
+                        $("#result").text("Number in words : " + result)
+                    }
+                })
+            })
+        })
+
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <form name="numberForm">
+        <label>Select a number</label>
+        <br>
+        <br>
+        <select id="number">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+        </select>
+        <div class="submit-btn">
+            <input type="button" value="Submit" >
+        </div>
+        <div id="result">
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

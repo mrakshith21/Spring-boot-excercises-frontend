@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $("input").click(function(){
+                $.ajax({
+                    url : "http://localhost:8081/monuments?name=" + $("#monument").find(":selected").text(),
+                    type: "GET",
+                    crossDomain: true,
+                    headers : {
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    success : function (result){
+                        console.log(result)
+                        $("#result").attr('src', `data:image/jpg;base64,${result}`)
+                    }
+                })
+            })
+        })
+
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <form name="cityForm" >
+        <br>
+        <br>
+        Select monument :
+        <select id="monument">
+            <option value='India Gate' >India Gate</option>
+            <option value='Iron Pillar' >Iron Pillar</option>
+            <option value='Konark Temple' >Konark Temple</option>
+            <option value='Mysore Palace' >Mysore Palace</option>
+            <option value='Statue of Unity' >Statue of Unity</option>
+            <option value='Taj Mahal' >Taj Mahal</option>
+        </select>
+        <br>
+        <br>
+        <input type="button" value="Submit" />
+        <br>
+        <br>
+        <div>
+            <img src="" id="result" alt="Select a monument">
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        var request=new XMLHttpRequest();
+        function doTime()
+        {
+            var url = "http://localhost:8080/time";
+            request.open("GET",url,true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage()
+        {
+            if ( request.readyState === 4 )
+            {
+                var result = request.responseText;
+                console.log(result);
+                document.getElementById("result").innerHTML = "Current time : " + result;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <form name="timeForm" >
+        <input type="button" value="Get Current Time" onClick="doTime()" />
+        <br>
+        <br>
+        <br>
+        <div id="result"></div>
+    </form>
+</div>
+</body>
+</html>

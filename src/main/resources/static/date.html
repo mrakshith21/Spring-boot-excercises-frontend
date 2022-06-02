@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        var request=new XMLHttpRequest();
+        function doDate()
+        {
+            var url = "http://localhost:8080/date";
+            request.open("GET",url,true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage()
+        {
+            if ( request.readyState === 4 )
+            {
+                var result = request.responseText;
+                console.log(result);
+                document.getElementById("result").innerHTML = "Current date : " + result;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <form name="dateForm" >
+        <input type="button" value="Get Current Date" onClick="doDate()" />
+        <br>
+        <br>
+        <br>
+        <div id="result"></div>
+    </form>
+</div>
+</body>
+</html>

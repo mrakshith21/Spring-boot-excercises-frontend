@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+
+        let request = new XMLHttpRequest();
+        function submit(){
+            let url = "http://localhost:8080/add?num1=" + document.getElementById("op1").value
+                + "&num2=" + document.getElementById("op2").value;
+            console.log(url);
+            request.open("GET", url, true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage(){
+            if(request.readyState === 4 && request.status === 200){
+                let result = request.responseText;
+                console.log(result);
+                document.getElementById("result").innerHTML = "Result of addition : " + result;
+            }
+            if(request.readyState === 4 && request.status !== 200){
+                alert("Please enter valid numbers");
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <label>Operand 1 </label>
+    <input type="text" id="op1"/>
+    <br><br>
+    <label>Operand 2</label>
+    <input type="text" id="op2"/>
+    <div class="submit-btn">
+        <input type="button" value="Submit" onclick="submit()">
+    </div>
+    <div id="result">
+
+    </div>
+</div>
+</body>
+</html>

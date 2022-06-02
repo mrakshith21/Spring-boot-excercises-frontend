@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+
+        $("document").ready(function (){
+            $("#submit-btn").click(function (){
+                $.ajax(
+                    {
+                        url: "http://localhost:8081/sentence?text=" + $("#sentence").val(),
+                        type: "GET",
+                        crossDomain: true,
+
+                        headers : {
+                            "Access-Control-Allow-Origin":"*"
+                        },
+                        success : function (result){
+                            console.log(result)
+                            $("#result").text("List of words : [" + result + "]")
+                        }
+                    }
+                )
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <label>Sentence</label>
+    <input type="text" id="sentence"/>
+    <div class="submit-btn">
+        <input type="button" id="submit-btn" value="Submit" >
+    </div>
+    <div id="result">
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        let request=new XMLHttpRequest();
+        function doSkills()
+        {
+            let lang;
+            let l = document.skillsForm.skills.length;
+            console.log('no of check boxes = ' + l);
+
+            queryString="";
+            let j = 0;
+            for ( i = 0; i < l; i++ )
+            {
+                if ( document.skillsForm.skills[i].checked )
+                {
+                    j++;
+                    lang = document.skillsForm.skills[i].value;
+                    console.log(lang)
+                    queryString = queryString + "&s" + j + "=" + lang;
+                }
+            }
+            // queryString = "n="+j + queryString;
+            console.log(queryString);
+
+            let url = "http://localhost:8081/skills?"+queryString;
+            console.log('url = ' + url);
+            request.open("GET",url,true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage()
+        {
+            if ( request.readyState == 4 && request.status == 200 )
+            {
+                let result = request.responseText;
+                console.log('result = ' + result);
+                document.getElementById("result").innerHTML = result;
+            }
+        }
+    </script>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form name="skillsForm" >
+        <br>
+        <br>
+        Skills :
+        <input type="checkbox" name="skills" value="C" />C
+        <input type="checkbox" name="skills" value="CPP" />C++
+        <input type="checkbox" name="skills" value="JV" />Java
+        <input type="checkbox" name="skills" value="PHP" />PHP
+        <input type="checkbox" name="skills" value="PY" />Python
+        <br>
+        <br>
+        <input type="button" value="Submit" onClick="doSkills()" />
+        <br>
+        <br>
+        <div id="result"></div>
+    </form>
+</div>
+
+</body>
+</html>

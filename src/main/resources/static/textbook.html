@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+
+        let request = new XMLHttpRequest();
+        function submit(){
+            let url = "http://localhost:8081/welcome?name=" + document.getElementById("name").value;
+            console.log(url);
+            request.open("GET", url, true);
+            request.onreadystatechange = updatePage;
+            request.send(null);
+        }
+
+        function updatePage(){
+            if(request.readyState === 4 && request.status === 200){
+                let result = request.responseText;
+                console.log(result);
+                document.getElementById("result").innerHTML = result;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <label>Name</label>
+        <input type="text" id="name"/>
+        <div class="submit-btn">
+            <input type="button" value="Submit" onclick="submit()">
+        </div>
+        <div id="result">
+
+        </div>
+    </div>
+</body>
+</html>
