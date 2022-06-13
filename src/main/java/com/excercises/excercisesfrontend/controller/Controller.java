@@ -7,14 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -50,8 +43,7 @@ public class Controller {
     // 15 - counter
     @GetMapping(value = "/counter")
     public Integer counter(){
-        Integer result = restTemplate.getForObject("http://localhost:8081/counter", Integer.class);
-        return result;
+        return restTemplate.getForObject("http://localhost:8081/counter", Integer.class);
     }
 
 
@@ -74,6 +66,16 @@ public class Controller {
                 .uri("http://localhost:8081/zodiacSign?date=" + day + "&month=" + month)
                 .retrieve()
                 .bodyToMono(String.class)
+                .block();
+    }
+
+    @GetMapping(value = "/zodiacSignImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity zodiacSignImage(@RequestParam("zodiac") String zodiac){
+        return webClient.build()
+                .get()
+                .uri("http://localhost:8081/zodiacSignImage?zodiac=" + zodiac)
+                .retrieve()
+                .bodyToMono(ResponseEntity.class)
                 .block();
     }
 

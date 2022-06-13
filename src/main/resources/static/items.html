@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <style>
+        .container{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .submit-btn{
+            margin: 20px;
+        }
+
+        img{
+            margin: 1rem;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $("input").click(function(){
+
+                const product = $("#product").find(":selected").text().toLowerCase();
+                $.ajax({
+                    url : "http://localhost:8081/itemsDisplay?product=" + product,
+                    type: "GET",
+                    crossDomain: true,
+                    headers : {
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    success : function (result){
+                        console.log(result);
+                        $("#result").html('');
+                        result.forEach(image => {
+                            $.ajax({
+                                url : "http://localhost:8081/itemsDisplay/products/" + product + "/" + image,
+                                type: "GET",
+                                crossDomain: true,
+                                headers : {
+                                    "Access-Control-Allow-Origin":"*"
+                                },
+                                success : function (imgResult){
+                                    console.log(imgResult);
+                                    $("#result").append('<img src="' + `data:image/jpg;base64,${imgResult}` + '" width="300"/>');
+                                }
+                            })
+                        })
+                    }
+                })
+            })
+        })
+
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <form name="cityForm" >
+        <br>
+        <br>
+        Select monument :
+        <select id="product">
+            <option value='Fruits' >Fruits</option>
+            <option value='Vegetables' >Vegetables</option>
+            <option value='Dairy' >Dairy</option>
+            <option value='Groceries' >Groceries</option>
+        </select>
+        <br>
+        <br>
+        <input type="button" value="Submit" />
+        <br>
+        <br>
+        <div id="result">
+        </div>
+    </form>
+</div>
+</body>
+</html>

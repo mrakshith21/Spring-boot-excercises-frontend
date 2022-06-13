@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <title>Title</title>
 
     <style>
@@ -13,30 +14,51 @@
         .submit-btn{
             margin: 20px;
         }
+
+        img{
+            margin: 1rem;
+        }
     </style>
 
     <script>
 
-        let request = new XMLHttpRequest();
-        function submit(){
-            let url = "http://localhost:8080/zodiacSign?day=" + document.getElementById("day").value
-                + "&month=" + document.getElementById("month").value;
-            console.log(url);
-            request.open("GET", url, true);
-            request.onreadystatechange = updatePage;
-            request.send(null);
-        }
+        $(document).ready(function(){
+            $("#submit").click(function(){
 
-        function updatePage(){
-            if(request.readyState === 4 && request.status === 200){
-                let result = request.responseText;
-                console.log(result);
-                document.getElementById("result").innerHTML = "Your zodiac sign is : " + result;
-            }
-            if(request.readyState === 4 && request.status !== 200){
-                alert("Please enter a valid date");
-            }
-        }
+                const product = $("#product").find(":selected").text().toLowerCase();
+                $.ajax({
+                    url : "http://localhost:8081/zodiacSign?date=" + document.getElementById("day").value
+                        + "&month=" + document.getElementById("month").value,
+                    type: "GET",
+                    crossDomain: true,
+                    headers : {
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    success : function (result){
+                        console.log(result);
+                        $("#result").text("Your zodiac sign is " + result);
+                        $("#sign-image").html("");
+                        $.ajax({
+                            url : "http://localhost:8081/zodiacSignImage?zodiac=" + result.toLowerCase(),
+                            type: "GET",
+                            crossDomain: true,
+                            headers : {
+                                "Access-Control-Allow-Origin":"*"
+                            },
+                            success : function (imgResult){
+                                console.log(imgResult);
+                                $("#sign-image").append('<img src="' + `data:image/jpg;base64,${imgResult}` + '" width="300"/>');
+                            }
+                        })
+                    },
+                    error : function(err){
+                        alert("Please enter a valid date");
+                        $("#result").html("");
+                        $("#sign-image").html("");
+                    }
+                })
+            })
+        })
     </script>
 </head>
 <body>
@@ -47,10 +69,12 @@
     <label>Month</label>
     <input type="text" id="month"/>
     <div class="submit-btn">
-        <input type="button" value="Submit" onclick="submit()">
+        <input type="button" id="submit" value="Submit">
     </div>
     <div id="result">
 
+    </div>
+    <div id="sign-image">
     </div>
 </div>
 </body>
